@@ -1,32 +1,62 @@
 <div class="content-area">
-<clr-datagrid [(clrDgSelected)]="selected" >
+<clr-datagrid  [(clrDgSelected)]="selected">
     <clr-dg-action-bar>
         <div class="btn-group">
-            <button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="plus"></clr-icon> Add
+            <button type="button" class="btn btn-sm btn-secondary" (click)="basic=true"><clr-icon shape="plus"></clr-icon> Add
                 to group</button>
             <button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="close"></clr-icon> Delete</button>
             <button type="button" class="btn btn-sm btn-secondary"  ><clr-icon shape="pencil"></clr-icon> Edit</button>
         </div>
     </clr-dg-action-bar>
-    <clr-dg-column>User ID</clr-dg-column>
-    <clr-dg-column>Name</clr-dg-column>
-    <clr-dg-column>Creation date</clr-dg-column>
-    <clr-dg-column>Favorite color</clr-dg-column>
+    <clr-dg-column [clrDgSortBy]="idComparator" [clrDgSortOrder]="idSortOrder">id</clr-dg-column>
+    <clr-dg-column [clrDgSortBy]="nameComparator" [clrDgSortOrder]="nameSortOrder">name</clr-dg-column>
+    <clr-dg-column>passport</clr-dg-column>
+    <clr-dg-column>isactive</clr-dg-column>
+    <clr-dg-column>status</clr-dg-column>
+    <clr-dg-column>history_id</clr-dg-column>
 
-    <clr-dg-row >
-        <clr-dg-cell>test</clr-dg-cell>
-        <clr-dg-cell>test</clr-dg-cell>
-        <clr-dg-cell>test</clr-dg-cell>
-        <clr-dg-cell>test</clr-dg-cell>
+    <clr-dg-row *clrDgItems="let student of students" [(clrDgItem)]="student" [(clrDgSelected)]="student.selected">
+        <clr-dg-cell>{{student.id}}</clr-dg-cell>
+        <clr-dg-cell>{{student.name}}</clr-dg-cell>
+        <clr-dg-cell>{{student.passport}}</clr-dg-cell>
+        <clr-dg-cell>{{student.isactive}}</clr-dg-cell>
+        <clr-dg-cell>{{student.status}}</clr-dg-cell>
+        <clr-dg-cell>{{student.history_id}}</clr-dg-cell>
     </clr-dg-row>
-    <clr-dg-row >
-        <clr-dg-cell>test</clr-dg-cell>
-        <clr-dg-cell>test</clr-dg-cell>
-        <clr-dg-cell>test</clr-dg-cell>
-        <clr-dg-cell>test</clr-dg-cell>
-    </clr-dg-row>
+    
 
-    <clr-dg-footer>footer</clr-dg-footer>
+    <clr-dg-footer>Selected students: <span *ngFor="let user of selected">{{user.name}}</span>
+    <br/>
+    {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} Students
+          <clr-dg-pagination #pagination [clrDgPageSize]="5"></clr-dg-pagination>
+</clr-dg-footer>
 </clr-datagrid>
+<clr-modal [(clrModalOpen)]="basic">
+    <h3 class="modal-title">Create new Student detail</h3>
+    <div class="modal-body">
+ <form>
+    <section class="form-block">
+        <label>Student Form</label>
+        <div class="form-group">
+            <label for="aForm_1">Student name</label>
+            <input type="text" id="aForm_1" placeholder="Enter value here" size="45">
+        </div>
+        <div class="form-group">
+            <label for="aForm_2">Student Passport</label>
+            <input type="password" id="aForm_2" placeholder="Enter another value here" size="35">
+        </div>
+        <div class="form-group">
+            <label for="aForm_4">Comments</label>
+            <textarea id="aForm_4" rows="5"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" (click)="basic = false">Submit</button>
+        <button type="button" class="btn btn-outline" (click)="basic = false">Cancel</button>
+        
+    </section>
+</form>
+    </div>
+    <div class="modal-footer">
+    </div>
+</clr-modal>
 </div>
 
