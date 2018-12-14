@@ -1,0 +1,62 @@
+<div class="content-area">
+    <clr-datagrid [(clrDgSelected)]="selected">
+        <clr-dg-action-bar>
+            <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-secondary" (click)="showmodal=true">
+                    <clr-icon shape="plus"></clr-icon> Add
+                    to group
+                </button>
+                <button type="button" class="btn btn-sm btn-secondary">
+                    <clr-icon shape="close"></clr-icon> Delete
+                </button>
+                <button type="button" class="btn btn-sm btn-secondary">
+                    <clr-icon shape="pencil"></clr-icon> Edit
+                </button>
+            </div>
+        </clr-dg-action-bar>
+        <clr-dg-column [clrDgSortBy]="idComparator" [clrDgSortOrder]="idSortOrder">id</clr-dg-column>
+        <clr-dg-column [clrDgSortBy]="nameComparator" [clrDgSortOrder]="nameSortOrder">name</clr-dg-column>
+        <clr-dg-column>passport</clr-dg-column>
+        <clr-dg-column>isactive</clr-dg-column>
+        <clr-dg-column>status</clr-dg-column>
+        <clr-dg-column>history_id</clr-dg-column>
+
+        <clr-dg-row *clrDgItems="let student of students" [(clrDgItem)]="student" [(clrDgSelected)]="student.selected">
+            <clr-dg-cell>{{student.id}}</clr-dg-cell>
+            <clr-dg-cell>{{student.name}}</clr-dg-cell>
+            <clr-dg-cell>{{student.passport}}</clr-dg-cell>
+            <clr-dg-cell>{{student.isactive}}</clr-dg-cell>
+            <clr-dg-cell>{{student.status}}</clr-dg-cell>
+            <clr-dg-cell>{{student.history_id}}</clr-dg-cell>
+        </clr-dg-row>
+        <clr-dg-footer>Selected students: <span *ngFor="let user of selected">{{user.name}}</span>
+            <br />
+            {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} Students
+            <clr-dg-pagination #pagination [clrDgPageSize]="5"></clr-dg-pagination>
+        </clr-dg-footer>
+    </clr-datagrid>
+
+    <clr-modal [(clrModalOpen)]="showmodal">
+        <h3 class="modal-title">Student Form</h3>
+        <div class="modal-body">
+            <form #studentForm="ngForm" (ngSubmit)="saveStudent(student)">
+                <section class="form-block">
+                    <label>Student Form</label>
+                    <div class="form-group" >
+                        <label for="sname">Student name</label>
+                        <input type="text" required id="sname" placeholder="Enter student name" size="45" name="studentName" [(ngModel)]="student.name">
+                    </div>
+                    <div class="form-group">
+                        <label for="spassport">Student Passport</label>
+                        <input type="text" required id="spassport" placeholder="Enter passport value" size="35" name="passport" [(ngModel)]="student.passport">
+                    </div>
+                    <button type="submit" class="btn btn-primary" (click)="showmodal = true">Submit</button>
+                    <button type="button" class="btn btn-outline" (click)="showmodal = false">Cancel</button>
+                </section>
+            </form>
+        </div>
+        <div class="modal-footer">
+            Angular Generated Forom Model : {{studentForm.value | json}}
+        </div>
+    </clr-modal>
+</div>
